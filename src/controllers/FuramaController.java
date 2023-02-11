@@ -4,8 +4,8 @@ import models.*;
 import services.CustomerService;
 import services.EmployeeService;
 import services.FacilityService;
+import utils.CheckAddNewFacility;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,6 +14,7 @@ public class FuramaController {
     private static EmployeeService employeeService = new EmployeeService();
     private static CustomerService customerService = new CustomerService();
     private static FacilityService facilityService = new FacilityService();
+    private static CheckAddNewFacility checkAddNewFacility = new CheckAddNewFacility();
 
     public static void main(String[] args) {
         int select = 0;
@@ -256,44 +257,102 @@ public class FuramaController {
                                     int selectAddFacility = Integer.parseInt(scanner.nextLine());
                                     switch (selectAddFacility) {
                                         case 1:
-                                            System.out.println("Enter name of service");
-                                            String serviceNameVilla = scanner.nextLine();
-                                            System.out.println("Enter usable Area");
-                                            int usableAreaVilla = Integer.parseInt(scanner.nextLine());
-                                            System.out.println("Enter price");
-                                            double priceVilla = Double.parseDouble(scanner.nextLine());
-                                            System.out.println("Enter maximum Person");
-                                            int maximumPersonVilla = Integer.parseInt(scanner.nextLine());
-                                            System.out.println("Enter type of rental");
-                                            String reatalTypeVilla = scanner.nextLine();
-                                            System.out.println("Enter standard room");
-                                            String standardRoomVilla = scanner.nextLine();
-                                            System.out.println("Enter poolArea");
-                                            int poolAreaVilla = Integer.parseInt(scanner.nextLine());
-                                            System.out.println("Enter number Of floor");
-                                            int numberOfFloorVilla = Integer.parseInt(scanner.nextLine());
-                                            System.out.println("Enter number of uses");
-                                            int numberOfUsesVilla = Integer.parseInt(scanner.nextLine());
-                                            Villa newVilla = new Villa(serviceNameVilla, usableAreaVilla, priceVilla, maximumPersonVilla, reatalTypeVilla, standardRoomVilla, poolAreaVilla, numberOfFloorVilla);
+                                            String serviceID;
+                                            String serviceNameVilla;
+                                            double usableAreaVilla;
+                                            double priceVilla;
+                                            int maximumPersonVilla;
+                                            String reatalTypeVilla;
+                                            String standardRoomVilla;
+                                            double poolAreaVilla;
+                                            int numberOfFloorVilla;
+                                            int numberOfUsesVilla;
+                                            do {
+                                                System.out.println("Enter ID of service");
+                                                serviceID = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkVillaId(serviceID));
+                                            do {
+                                                System.out.println("Enter name of service");
+                                                serviceNameVilla = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkNameService(serviceNameVilla));
+                                            do {
+                                                System.out.println("Enter usable Area");
+                                                usableAreaVilla = Double.parseDouble(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkArea(String.valueOf(usableAreaVilla)));
+                                            do {
+                                                System.out.println("Enter price");
+                                                priceVilla = Double.parseDouble(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkPrice(String.valueOf(priceVilla)));
+                                            do {
+                                                System.out.println("Enter maximum Person");
+                                                maximumPersonVilla = Integer.parseInt(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkMaximumPerson(String.valueOf(maximumPersonVilla)));
+                                            do {
+                                                System.out.println("Enter type of rental");
+                                                reatalTypeVilla = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkRentalType(reatalTypeVilla));
+                                            do {
+                                                System.out.println("Enter standard room");
+                                                standardRoomVilla = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkStandardRoom(standardRoomVilla));
+                                            do {
+                                                System.out.println("Enter area of pool");
+                                                poolAreaVilla = Double.parseDouble(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkArea(String.valueOf(poolAreaVilla)));
+                                            do {
+                                                System.out.println("Enter number Of floor");
+                                                numberOfFloorVilla = Integer.parseInt(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkNumberOfFloors(String.valueOf(numberOfFloorVilla)));
+                                            do {
+                                                System.out.println("Enter number of uses");
+                                                numberOfUsesVilla = Integer.parseInt(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkNumberOfUses(String.valueOf(numberOfUsesVilla)));
+                                            Villa newVilla = new Villa(serviceID, serviceNameVilla, usableAreaVilla, priceVilla, maximumPersonVilla, reatalTypeVilla, standardRoomVilla, poolAreaVilla, numberOfFloorVilla);
                                             facilityService.addVilla(newVilla, numberOfUsesVilla);
                                             flagOneFacilty = true;
                                             break;
                                         case 2:
-                                            System.out.println("Enter name of service");
-                                            String serviceNameRoom = scanner.nextLine();
-                                            System.out.println("Enter usable Area");
-                                            int usableAreaRoom = Integer.parseInt(scanner.nextLine());
-                                            System.out.println("Enter price");
-                                            double priceRoom = Double.parseDouble(scanner.nextLine());
-                                            System.out.println("Enter maximum Person");
-                                            int maximumPersonRoom = Integer.parseInt(scanner.nextLine());
-                                            System.out.println("Enter type of rental");
-                                            String reatalTypeRoom = scanner.nextLine();
-                                            System.out.println("Enter free service");
-                                            String freeServiceRoom = scanner.nextLine();
-                                            System.out.println("Enter number of uses");
-                                            int numberOfUsesRoom = Integer.parseInt(scanner.nextLine());
-                                            Room newRoom = new Room(serviceNameRoom, usableAreaRoom, priceRoom, maximumPersonRoom, reatalTypeRoom, freeServiceRoom);
+                                            String serviceIDRoom;
+                                            String serviceNameRoom;
+                                            double usableAreaRoom;
+                                            double priceRoom;
+                                            int maximumPersonRoom;
+                                            String reatalTypeRoom;
+                                            String freeServiceRoom;
+                                            int numberOfUsesRoom;
+                                            do {
+                                                System.out.println("Enter ID of service");
+                                                serviceIDRoom = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkRoomId(serviceIDRoom));
+                                            do {
+                                                System.out.println("Enter name of service");
+                                                serviceNameRoom = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkNameService(serviceNameRoom));
+                                            do {
+                                                System.out.println("Enter usable Area");
+                                                usableAreaRoom = Double.parseDouble(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkArea(String.valueOf(usableAreaRoom)));
+                                            do {
+                                                System.out.println("Enter price");
+                                                priceRoom = Double.parseDouble(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkPrice(String.valueOf(priceRoom)));
+                                            do {
+                                                System.out.println("Enter maximum Person");
+                                                maximumPersonRoom = Integer.parseInt(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkMaximumPerson(String.valueOf(maximumPersonRoom)));
+                                            do {
+                                                System.out.println("Enter type of rental");
+                                                reatalTypeRoom = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkRentalType(reatalTypeRoom));
+                                            do {
+                                                System.out.println("Enter free service");
+                                                freeServiceRoom = scanner.nextLine();
+                                            } while (!checkAddNewFacility.checkNameService(freeServiceRoom));
+                                            do {
+                                                System.out.println("Enter number of uses");
+                                                numberOfUsesRoom = Integer.parseInt(scanner.nextLine());
+                                            } while (!checkAddNewFacility.checkNumberOfUses(String.valueOf(numberOfUsesRoom)));
+                                            Room newRoom = new Room(serviceIDRoom, serviceNameRoom, usableAreaRoom, priceRoom, maximumPersonRoom, reatalTypeRoom, freeServiceRoom);
                                             facilityService.addRoom(newRoom, numberOfUsesRoom);
                                             flagOneFacilty = true;
                                             break;

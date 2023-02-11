@@ -2,20 +2,20 @@ package models;
 
 public class Villa extends Facility {
     private String standardRoom;
-    private int poolArea;
+    private double poolArea;
     private int numberOfFloor;
 
     public Villa() {
     }
 
-    public Villa(String standardRoom, int poolArea, int numberOfFloor) {
+    public Villa(String standardRoom, double poolArea, int numberOfFloor) {
         this.standardRoom = standardRoom;
         this.poolArea = poolArea;
         this.numberOfFloor = numberOfFloor;
     }
 
-    public Villa(String serviceName, int useableArea, double price, int maximumPerson, String rentalType, String standardRoom, int poolArea, int numberOfFloor) {
-        super(serviceName, useableArea, price, maximumPerson, rentalType);
+    public Villa(String serviceID, String serviceName, double useableArea, double price, int maximumPerson, String rentalType, String standardRoom, double poolArea, int numberOfFloor) {
+        super(serviceID, serviceName, useableArea, price, maximumPerson, rentalType);
         this.standardRoom = standardRoom;
         this.poolArea = poolArea;
         this.numberOfFloor = numberOfFloor;
@@ -29,11 +29,11 @@ public class Villa extends Facility {
         this.standardRoom = standardRoom;
     }
 
-    public int getPoolArea() {
+    public double getPoolArea() {
         return poolArea;
     }
 
-    public void setPoolArea(int poolArea) {
+    public void setPoolArea(double poolArea) {
         this.poolArea = poolArea;
     }
 
