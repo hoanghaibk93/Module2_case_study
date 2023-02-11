@@ -1,16 +1,19 @@
 package controllers;
 
-import models.Customer;
-import models.Employee;
+import models.*;
 import services.CustomerService;
 import services.EmployeeService;
+import services.FacilityService;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class FuramaController {
     private static EmployeeService employeeService = new EmployeeService();
     private static CustomerService customerService = new CustomerService();
+    private static FacilityService facilityService = new FacilityService();
 
     public static void main(String[] args) {
         int select = 0;
@@ -229,11 +232,89 @@ public class FuramaController {
                     } while (flag);
                     break;
                 case 3:
-                    System.out.println("------Facility Management------");
-                    System.out.println("1. Display list facility");
-                    System.out.println("2. Add new facility");
-                    System.out.println("3. Display list facility maintenance");
-                    System.out.println("4. Return main menu");
+                    boolean flagOneFacilty = false;
+                    do {
+                        System.out.println("------Facility Management------");
+                        System.out.println("1. Display list facility");
+                        System.out.println("2. Add new facility");
+                        System.out.println("3. Display list facility maintenance");
+                        System.out.println("4. Return main menu");
+                        int selectFacilityManagement = Integer.parseInt(scanner.nextLine());
+                        switch (selectFacilityManagement) {
+                            case 1:
+                                Map<Facility, Integer> mapListFacility = facilityService.displayFacility();
+                                for (Map.Entry<Facility, Integer> entry : mapListFacility.entrySet()) {
+                                    System.out.println(entry.getKey() + "-" + entry.getValue());
+                                }
+                                flag = true;
+                                break;
+                            case 2:
+                                do {
+                                    System.out.println("1. And New Villa");
+                                    System.out.println("2. Add New Room");
+                                    System.out.println("3. Back to menu");
+                                    int selectAddFacility = Integer.parseInt(scanner.nextLine());
+                                    switch (selectAddFacility) {
+                                        case 1:
+                                            System.out.println("Enter name of service");
+                                            String serviceNameVilla = scanner.nextLine();
+                                            System.out.println("Enter usable Area");
+                                            int usableAreaVilla = Integer.parseInt(scanner.nextLine());
+                                            System.out.println("Enter price");
+                                            double priceVilla = Double.parseDouble(scanner.nextLine());
+                                            System.out.println("Enter maximum Person");
+                                            int maximumPersonVilla = Integer.parseInt(scanner.nextLine());
+                                            System.out.println("Enter type of rental");
+                                            String reatalTypeVilla = scanner.nextLine();
+                                            System.out.println("Enter standard room");
+                                            String standardRoomVilla = scanner.nextLine();
+                                            System.out.println("Enter poolArea");
+                                            int poolAreaVilla = Integer.parseInt(scanner.nextLine());
+                                            System.out.println("Enter number Of floor");
+                                            int numberOfFloorVilla = Integer.parseInt(scanner.nextLine());
+                                            System.out.println("Enter number of uses");
+                                            int numberOfUsesVilla = Integer.parseInt(scanner.nextLine());
+                                            Villa newVilla = new Villa(serviceNameVilla, usableAreaVilla, priceVilla, maximumPersonVilla, reatalTypeVilla, standardRoomVilla, poolAreaVilla, numberOfFloorVilla);
+                                            facilityService.addVilla(newVilla, numberOfUsesVilla);
+                                            flagOneFacilty = true;
+                                            break;
+                                        case 2:
+                                            System.out.println("Enter name of service");
+                                            String serviceNameRoom = scanner.nextLine();
+                                            System.out.println("Enter usable Area");
+                                            int usableAreaRoom = Integer.parseInt(scanner.nextLine());
+                                            System.out.println("Enter price");
+                                            double priceRoom = Double.parseDouble(scanner.nextLine());
+                                            System.out.println("Enter maximum Person");
+                                            int maximumPersonRoom = Integer.parseInt(scanner.nextLine());
+                                            System.out.println("Enter type of rental");
+                                            String reatalTypeRoom = scanner.nextLine();
+                                            System.out.println("Enter free service");
+                                            String freeServiceRoom = scanner.nextLine();
+                                            System.out.println("Enter number of uses");
+                                            int numberOfUsesRoom = Integer.parseInt(scanner.nextLine());
+                                            Room newRoom = new Room(serviceNameRoom, usableAreaRoom, priceRoom, maximumPersonRoom, reatalTypeRoom, freeServiceRoom);
+                                            facilityService.addRoom(newRoom, numberOfUsesRoom);
+                                            flagOneFacilty = true;
+                                            break;
+                                        case 3:
+                                            flagOneFacilty = false;
+                                            break;
+                                    }
+                                } while (flagOneFacilty);
+                                break;
+                            case 3:
+                                Map<Facility, Integer> mapListMaintenanceFacility = facilityService.displayMaintenanceFacility();
+                                for (Map.Entry<Facility, Integer> entry : mapListMaintenanceFacility.entrySet()) {
+                                    System.out.println(entry.getKey() + "-" + entry.getValue());
+                                }
+                                flag = true;
+                                break;
+                            case 4:
+                                flag = false;
+                                break;
+                        }
+                    } while (flag);
                     break;
                 case 4:
                     System.out.println("------Booking Management------");
