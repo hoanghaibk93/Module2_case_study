@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 public class CheckAddNewFacility {
     static final private String VILLA_ID_REGEX = "^SVVL-\\d{4}$";
     static final private String ROOM_ID_REGEX = "^SVRO-\\d{4}$";
-    static final private String NAME_SERVICE_REGEX = "^[A-Z]\\w+";
-    static final private String AREA_REGEX = "(0*3[1-9]+\\.?\\d*)|(0*30\\.?\\d*[1-9])|(0*[4-9]\\d+\\.?\\d*)";
-    static final private String PRICE_REGEX = "(\\d*\\.?\\d*[1-9]$)|(\\d*\\.?\\d*[1-9]+\\d*)|(\\d*[1-9]\\.?\\d*)||([1-9]\\d*\\.?\\d*)";
+    static final private String NAME_SERVICE_REGEX = "^[A-Z].+";
+    static final private String AREA_REGEX = "(\\d*3[1-9]+\\.?\\d*)|(\\d*30\\d*\\.?\\d*[1-9]\\d*)|(\\d*[4-9]\\d+\\.?\\d*)|(\\d*30\\d+\\.?\\d*)";
+    static final private String PRICE_REGEX = "(^\\d*[1-9]\\d*\\.?\\d*)|(\\d*\\.?\\d*[1-9]\\d*)";
     static final private String MAXIMUM_PERSON_REGEX = "(^0*[1-9])|(^0*1\\d$)";
     static final private String RENTAL_TYPE_REGEX = "(RentByDay)|(RentByMonth)|(RentByYear)";
     static final private String NUMBER_OF_FLOORS ="(0*[1-9])|(\\d*[1-9]\\d*)";
