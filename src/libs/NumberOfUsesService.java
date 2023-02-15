@@ -66,7 +66,7 @@ public class NumberOfUsesService {
         Calendar calendar = Calendar.getInstance();
         Date currentDate = calendar.getTime();
         int currentYear = calendar.get(Calendar.YEAR);
-        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
         String dateBooking;
         int numberOfUses = 0;
         for (Booking booking : bookingTree) {

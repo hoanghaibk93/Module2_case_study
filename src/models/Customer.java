@@ -1,6 +1,6 @@
 package models;
 
-public class Customer extends Person {
+public class Customer extends Person implements Comparable<Customer> {
     private String typeOfCustomer;
     private String address;
 
@@ -41,5 +41,10 @@ public class Customer extends Person {
                 "typeOfCustomer='" + typeOfCustomer + '\'' +
                 ", address='" + address + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Customer o) {
+        return this.getId()-o.getId();
     }
 }

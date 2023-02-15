@@ -2,10 +2,7 @@ package controllers;
 
 import libs.NumberOfUsesService;
 import models.*;
-import services.BookingService;
-import services.CustomerService;
-import services.EmployeeService;
-import services.FacilityService;
+import services.*;
 import utils.CheckAddNewFacility;
 import utils.ReadWriteFile;
 
@@ -21,6 +18,7 @@ public class FuramaController {
     private static FacilityService facilityService = new FacilityService();
     private static CheckAddNewFacility checkAddNewFacility = new CheckAddNewFacility();
     private static BookingService bookingService = new BookingService();
+    private static PromotionService promotionService = new PromotionService();
     private static final String PATH_FILE_VILLA = "D:\\04_hoc_tap2\\codegym\\c1122g1\\FuramaResort\\src\\data\\villa.csv";
     private static final String PATH_FILE_ROOM = "D:\\04_hoc_tap2\\codegym\\c1122g1\\FuramaResort\\src\\data\\room.csv";
 
@@ -447,10 +445,36 @@ public class FuramaController {
                         } while (flagBooking);
                         break;
                     case 5:
-                        System.out.println("------Promotion Management------");
-                        System.out.println("1. Display list customers use service");
-                        System.out.println("2. Display list customers get voucher");
-                        System.out.println("Return main menu");
+                        Boolean flagPromotion = false;
+                        do {
+                            System.out.println("------Promotion Management------");
+                            System.out.println("1. Display list customers use service");
+                            System.out.println("2. Display list customers get voucher");
+                            System.out.println("3. Return main menu");
+                            int selectPromotion = Integer.parseInt(scanner.nextLine());
+                            switch (selectPromotion) {
+                                case 1:
+                                    System.out.println("Enter year that you want");
+                                    int year = Integer.parseInt(scanner.nextLine());
+                                    TreeSet<Booking> listBookingById = new TreeSet<>(new BookingById());
+                                    for (Booking booking : bookingService.displayBooking()) {
+                                        listBookingById.add(booking);
+                                    }
+                                    List<Customer> listCustomerService = promotionService.displayCustomerUseServiceByYear(listBookingById, customerService.displayCustomer(), year);
+                                    for (Customer customer : listCustomerService) {
+                                        System.out.println(customer);
+                                    }
+                                    flagPromotion = true;
+                                    break;
+                                case 2:
+                                    promotionService.displayCustomerGetVoucher();
+                                    flagPromotion = true;
+                                    break;
+                                case 3:
+                                    flagPromotion = false;
+                                    break;
+                            }
+                        } while (flagPromotion);
                         break;
                     case 6:
                         System.exit(0);
