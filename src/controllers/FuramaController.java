@@ -1,22 +1,28 @@
 package controllers;
 
+import libs.NumberOfUsesService;
 import models.*;
+import services.BookingService;
 import services.CustomerService;
 import services.EmployeeService;
 import services.FacilityService;
 import utils.CheckAddNewFacility;
-import utils.NotFoundException;
+import utils.ReadWriteFile;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeSet;
 
 public class FuramaController {
     private static EmployeeService employeeService = new EmployeeService();
     private static CustomerService customerService = new CustomerService();
     private static FacilityService facilityService = new FacilityService();
     private static CheckAddNewFacility checkAddNewFacility = new CheckAddNewFacility();
+    private static BookingService bookingService = new BookingService();
+    private static final String PATH_FILE_VILLA = "D:\\04_hoc_tap2\\codegym\\c1122g1\\FuramaResort\\src\\data\\villa.csv";
+    private static final String PATH_FILE_ROOM = "D:\\04_hoc_tap2\\codegym\\c1122g1\\FuramaResort\\src\\data\\room.csv";
 
     public static void main(String[] args) {
         int select = 0;
@@ -84,7 +90,7 @@ public class FuramaController {
                                         } else {
                                             throw new FileNotFoundException("id not exist");
                                         }
-                                    } catch (FileNotFoundException e){
+                                    } catch (FileNotFoundException e) {
                                         System.out.println(e.getMessage());
                                     }
                                     break;
@@ -310,10 +316,7 @@ public class FuramaController {
                                                     System.out.println("Enter number Of floor");
                                                     numberOfFloorVilla = Integer.parseInt(scanner.nextLine());
                                                 } while (!checkAddNewFacility.checkNumberOfFloors(String.valueOf(numberOfFloorVilla)));
-                                                do {
-                                                    System.out.println("Enter number of uses");
-                                                    numberOfUsesVilla = Integer.parseInt(scanner.nextLine());
-                                                } while (!checkAddNewFacility.checkNumberOfUses(String.valueOf(numberOfUsesVilla)));
+                                                numberOfUsesVilla = 0;
                                                 Villa newVilla = new Villa(serviceID, serviceNameVilla, usableAreaVilla, priceVilla, maximumPersonVilla, reatalTypeVilla, standardRoomVilla, poolAreaVilla, numberOfFloorVilla);
                                                 facilityService.addVilla(newVilla, numberOfUsesVilla);
                                                 flagOneFacility = true;
@@ -355,10 +358,7 @@ public class FuramaController {
                                                     System.out.println("Enter free service");
                                                     freeServiceRoom = scanner.nextLine();
                                                 } while (!checkAddNewFacility.checkNameService(freeServiceRoom));
-                                                do {
-                                                    System.out.println("Enter number of uses");
-                                                    numberOfUsesRoom = Integer.parseInt(scanner.nextLine());
-                                                } while (!checkAddNewFacility.checkNumberOfUses(String.valueOf(numberOfUsesRoom)));
+                                                numberOfUsesRoom = 0;
                                                 Room newRoom = new Room(serviceIDRoom, serviceNameRoom, usableAreaRoom, priceRoom, maximumPersonRoom, reatalTypeRoom, freeServiceRoom);
                                                 facilityService.addRoom(newRoom, numberOfUsesRoom);
                                                 flagOneFacility = true;
@@ -383,10 +383,68 @@ public class FuramaController {
                         } while (flag);
                         break;
                     case 4:
-                        System.out.println("------Booking Management------");
-                        System.out.println("1. Add new booking");
-                        System.out.println("2. Display list booking");
-                        System.out.println("3. Return main menu");
+                        boolean flagBooking = false;
+                        do {
+                            System.out.println("------Booking Management------");
+                            System.out.println("1. Add new booking");
+                            System.out.println("2. Display list booking");
+                            System.out.println("3. Return main menu");
+                            int selectBooking = Integer.parseInt(scanner.nextLine());
+                            switch (selectBooking) {
+                                case 1:
+                                    System.out.println("You enter a new Booking that you need");
+                                    List<Customer> listCustomer = customerService.displayCustomer();
+                                    for (Customer customer : listCustomer) {
+                                        System.out.println(customer);
+                                    }
+                                    System.out.println("Enter id of customer");
+                                    int id = Integer.parseInt(scanner.nextLine());
+                                    Map<Facility, Integer> mapListFacility = facilityService.displayFacility();
+                                    for (Map.Entry<Facility, Integer> entry : mapListFacility.entrySet()) {
+                                        System.out.println(entry.getKey() + "-" + entry.getValue());
+                                    }
+                                    System.out.println("Select id of service that you want book");
+                                    String idService = scanner.nextLine();
+                                    int bookingReference;
+                                    boolean flagBookingTwo = true;
+                                    do {
+                                        System.out.println("Enter reference booking");
+                                        bookingReference = Integer.parseInt(scanner.nextLine());
+                                        TreeSet<Booking> listBooking = bookingService.displayBooking();
+                                        for (Booking booking : listBooking) {
+                                            if (booking.getBookingReference() == bookingReference) {
+                                                System.out.println("Reference booking is duplicated");
+                                                flagBookingTwo = true;
+                                                break;
+                                            } else {
+                                                flagBookingTwo = false;
+                                            }
+                                        }
+                                    } while (flagBookingTwo);
+                                    System.out.println("Enter start date");
+                                    String startDate = scanner.nextLine();
+                                    System.out.println("Enter end date");
+                                    String endDate = scanner.nextLine();
+                                    System.out.println("Enter type of service");
+                                    String typeOfService = scanner.nextLine();
+                                    Booking newBooking = new Booking(bookingReference, idService, startDate, endDate, id, typeOfService);
+                                    bookingService.addBooking(newBooking);
+                                    ReadWriteFile.writeFileVilla(PATH_FILE_VILLA, NumberOfUsesService.updateVilla());
+                                    ReadWriteFile.writeFileRoom(PATH_FILE_ROOM, NumberOfUsesService.updateRoom());
+                                    flagBooking = true;
+                                    break;
+                                case 2:
+                                    TreeSet<Booking> listBooking = bookingService.displayBooking();
+                                    for (Booking booking : listBooking) {
+                                        System.out.println(booking);
+                                    }
+                                    flagBooking = true;
+                                    break;
+                                case 3:
+                                    flagBooking = false;
+                                    break;
+                            }
+                        } while (flagBooking);
                         break;
                     case 5:
                         System.out.println("------Promotion Management------");
@@ -399,9 +457,11 @@ public class FuramaController {
                         break;
                 }
             } while (true);
-        }catch (NumberFormatException e){
+        } catch (
+                NumberFormatException e) {
             System.out.println("Not Number!!!!, Enter again");
-        }catch (Exception e){
+        } catch (
+                Exception e) {
             e.getMessage();
         }
     }

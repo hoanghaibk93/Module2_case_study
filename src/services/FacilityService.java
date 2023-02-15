@@ -1,9 +1,9 @@
 package services;
 
+import libs.NumberOfUsesService;
 import models.Facility;
 import models.Room;
 import models.Villa;
-import services.enumfile.RentalType;
 import utils.ReadWriteFile;
 
 import java.util.LinkedHashMap;
@@ -12,9 +12,12 @@ import java.util.Map;
 public class FacilityService implements IFacilityService {
     private static final String PATH_FILE_VILLA = "D:\\04_hoc_tap2\\codegym\\c1122g1\\FuramaResort\\src\\data\\villa.csv";
     private static final String PATH_FILE_ROOM = "D:\\04_hoc_tap2\\codegym\\c1122g1\\FuramaResort\\src\\data\\room.csv";
-    private static Map<Villa, Integer> mapVillaService = ReadWriteFile.readFileVilla(PATH_FILE_VILLA);
-    private static Map<Room, Integer> mapRoomService = ReadWriteFile.readFileRoom(PATH_FILE_ROOM);
-    private static Map<Facility, Integer> mapFacilityService = new LinkedHashMap<>();
+    //private static Map<Villa, Integer> mapVillaService = ReadWriteFile.readFileVilla(PATH_FILE_VILLA);
+    private static Map<Villa, Integer> mapVillaService = NumberOfUsesService.updateVilla();
+    //private static Map<Room, Integer> mapRoomService = ReadWriteFile.readFileRoom(PATH_FILE_ROOM);
+    private static Map<Room, Integer> mapRoomService = NumberOfUsesService.updateRoom();
+   // private static Map<Facility, Integer> mapFacilityService = new LinkedHashMap<>();
+
 
 //    static {
 //        Villa villa1 = new Villa("SVVL-0001", "Pool villa", 320, 2000000, 5, RentalType.RentByDay.name(), "Three Bedrooms", 45, 2);
@@ -35,6 +38,7 @@ public class FacilityService implements IFacilityService {
 
     @Override
     public Map<Facility, Integer> displayFacility() {
+        Map<Facility, Integer> mapFacilityService = new LinkedHashMap<>();
         mapFacilityService.putAll(mapRoomService);
         mapFacilityService.putAll(mapVillaService);
         return mapFacilityService;
@@ -43,21 +47,22 @@ public class FacilityService implements IFacilityService {
     @Override
     public void addRoom(Room room, int numberOfUses) {
         mapRoomService.put(room, numberOfUses);
-        ReadWriteFile.writeFileRoom(PATH_FILE_ROOM, mapRoomService);
+        ReadWriteFile.writeFileRoom(PATH_FILE_ROOM, NumberOfUsesService.updateRoom());
     }
 
     @Override
     public void addVilla(Villa villa, int numberOfUses) {
         mapVillaService.put(villa, numberOfUses);
-        ReadWriteFile.writeFileVilla(PATH_FILE_VILLA, mapVillaService);
+        //Map<Villa, Integer> mapVillaServiceUpdate = NumberOfUsesService.updateFacility();
+        ReadWriteFile.writeFileVilla(PATH_FILE_VILLA, NumberOfUsesService.updateVilla());
     }
 
     @Override
     public Map<Facility, Integer> displayMaintenanceFacility() {
         Map<Facility, Integer> mapMaintenanceFacility = new LinkedHashMap<>();
-        for (Facility facility : mapFacilityService.keySet())
-            if (mapFacilityService.get(facility) == 5) {
-                mapMaintenanceFacility.put(facility, mapFacilityService.get(facility));
+        for (Facility facility : displayFacility().keySet())
+            if (displayFacility().get(facility) >= 5) {
+                mapMaintenanceFacility.put(facility, displayFacility().get(facility));
             }
         return mapMaintenanceFacility;
     }

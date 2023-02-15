@@ -1,3 +1,7 @@
-SVVL-0001,Pool villa,320.0,2000000.0,5,RentByDay,Three Bedrooms,45.0,2,2
-SVVL-0002,Garden villa,220.0,1500000.0,4,RentByMonth,Two Bedrooms,50.0,3,3
-SVVL-0004,Beach front villa,250.0,2500000.0,3,RentByYear,Five Bedrooms,70.0,1,5
+SVVL-0001,Pool villa,320.0,2000000.0,5,RentByDay,Three Bedrooms,45.0,2,0
+SVVL-0002,Garden villa,220.0,1500000.0,4,RentByMonth,Two Bedrooms,50.0,3,0
+SVVL-0004,Beach front villa,250.0,2500000.0,3,RentByYear,Five Bedrooms,70.0,1,0
+SVVL-0003,Beach Villa,300.0,230000.0,4,RentByDay,Two Bedrooms,50.0,2,2
+SVVL-0005,Mount view villa,300.0,4000000.0,4,RentByMonth,Five Bedrooms,34.0,3,2
+SVVL-0006,Double villa,400.0,2500000.0,6,RentByMonth,Five Bedrooms,40.0,3,3
+SVVL-0007,President villa,500.0,2500000.0,5,RentByDay,Ten Bedrooms,70.0,5,5

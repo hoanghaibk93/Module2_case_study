@@ -1,9 +1,6 @@
 package utils;
 
-import models.Customer;
-import models.Employee;
-import models.Room;
-import models.Villa;
+import models.*;
 
 import java.io.*;
 import java.util.*;
@@ -42,7 +39,6 @@ public class ReadWriteFile {
                 listEmployee.add(employee);
             }
             bufferedReader.close();
-            fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -78,7 +74,6 @@ public class ReadWriteFile {
                 listCustomer.add(customer);
             }
             bufferedReader.close();
-            fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -102,19 +97,19 @@ public class ReadWriteFile {
             e.printStackTrace();
         }
     }
-    public static Map<Villa,Integer> readFileVilla(String pathFileVilla) {
-        Map<Villa,Integer> listVilla = new LinkedHashMap<>();
+
+    public static Map<Villa, Integer> readFileVilla(String pathFileVilla) {
+        Map<Villa, Integer> listVilla = new LinkedHashMap<>();
         try {
             fileReader = new FileReader(pathFileVilla);
             bufferedReader = new BufferedReader(fileReader);
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 String arrayLine[] = line.split(COMMA);
-                Villa villa = new Villa(arrayLine[0], arrayLine[1],Double.parseDouble(arrayLine[2]), Double.parseDouble(arrayLine[3]), Integer.parseInt(arrayLine[4]), arrayLine[5], arrayLine[6], Double.parseDouble(arrayLine[7]),Integer.parseInt(arrayLine[8]));
-                listVilla.put(villa,Integer.parseInt(arrayLine[9]));
+                Villa villa = new Villa(arrayLine[0], arrayLine[1], Double.parseDouble(arrayLine[2]), Double.parseDouble(arrayLine[3]), Integer.parseInt(arrayLine[4]), arrayLine[5], arrayLine[6], Double.parseDouble(arrayLine[7]), Integer.parseInt(arrayLine[8]));
+                listVilla.put(villa, Integer.parseInt(arrayLine[9]));
             }
             bufferedReader.close();
-            fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -122,6 +117,7 @@ public class ReadWriteFile {
         }
         return listVilla;
     }
+
     public static void writeFileRoom(String pathFileRoom, Map<Room, Integer> roomList) {
         try {
             fileWriter = new FileWriter(pathFileRoom);
@@ -137,19 +133,19 @@ public class ReadWriteFile {
             e.printStackTrace();
         }
     }
-    public static Map<Room,Integer> readFileRoom(String pathFileRoom) {
-        Map<Room,Integer> listRoom = new LinkedHashMap<>();
+
+    public static Map<Room, Integer> readFileRoom(String pathFileRoom) {
+        Map<Room, Integer> listRoom = new LinkedHashMap<>();
         try {
             fileReader = new FileReader(pathFileRoom);
             bufferedReader = new BufferedReader(fileReader);
             String line = null;
             while ((line = bufferedReader.readLine()) != null) {
                 String arrayLine[] = line.split(COMMA);
-                Room room = new Room(arrayLine[0], arrayLine[1],Double.parseDouble(arrayLine[2]), Double.parseDouble(arrayLine[3]), Integer.parseInt(arrayLine[4]), arrayLine[5], arrayLine[6]);
-                listRoom.put(room,Integer.parseInt(arrayLine[7]));
+                Room room = new Room(arrayLine[0], arrayLine[1], Double.parseDouble(arrayLine[2]), Double.parseDouble(arrayLine[3]), Integer.parseInt(arrayLine[4]), arrayLine[5], arrayLine[6]);
+                listRoom.put(room, Integer.parseInt(arrayLine[7]));
             }
             bufferedReader.close();
-            fileReader.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -157,4 +153,40 @@ public class ReadWriteFile {
         }
         return listRoom;
     }
+
+    public static TreeSet<Booking> readFileBooking(String pathFileBooking) {
+        TreeSet<Booking> listBooking = new TreeSet<>();
+        try {
+            fileReader = new FileReader(pathFileBooking);
+            bufferedReader = new BufferedReader(fileReader);
+            String line = null;
+            while ((line = bufferedReader.readLine()) != null) {
+                String arrayLine[] = line.split(COMMA);
+                Booking booking = new Booking(Integer.parseInt(arrayLine[0]), arrayLine[1], arrayLine[2], arrayLine[3], Integer.parseInt(arrayLine[4]), arrayLine[5]);
+                listBooking.add(booking);
+            }
+            bufferedReader.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return listBooking;
+    }
+
+    public static void writeFileBooking(String pathFileBooking, TreeSet<Booking> bookingList) {
+        try {
+            fileWriter = new FileWriter(pathFileBooking);
+            bufferedWriter = new BufferedWriter(fileWriter);
+            for (Booking booking : bookingList) {
+                String line = booking.getBookingReference() + COMMA + booking.getServiceID() + COMMA + booking.getStartDate() + COMMA + booking.getEndDate() + COMMA + booking.getId() + COMMA + booking.getTypeOfService();
+                bufferedWriter.write(line);
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
