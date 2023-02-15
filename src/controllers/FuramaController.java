@@ -4,6 +4,7 @@ import libs.NumberOfUsesService;
 import models.*;
 import services.*;
 import utils.CheckAddNewFacility;
+import utils.NotFoundIdException;
 import utils.ReadWriteFile;
 
 import java.io.FileNotFoundException;
@@ -78,6 +79,7 @@ public class FuramaController {
                                     double salary = Double.parseDouble(scanner.nextLine());
                                     Employee newEmployee = new Employee(id, name, dateOfBirth, gender, idCard, phoneNumber, email, lever, position, salary);
                                     employeeService.addEmployee(newEmployee);
+                                    System.out.println("Successful!!!");
                                     break;
                                 case 3:
                                     System.out.println("Enter a id of Employee that you want delete");
@@ -85,10 +87,11 @@ public class FuramaController {
                                     try {
                                         if (employeeService.deleteEmployee(deleteId)) {
                                             System.out.println("This employee has been delete");
+                                            System.out.println("Successful!!!");
                                         } else {
-                                            throw new FileNotFoundException("id not exist");
+                                            throw new NotFoundIdException("id not exist");
                                         }
-                                    } catch (FileNotFoundException e) {
+                                    } catch (NotFoundIdException e) {
                                         System.out.println(e.getMessage());
                                     }
                                     break;
@@ -146,6 +149,10 @@ public class FuramaController {
                                 case 5:
                                     flag = false;
                                     break;
+                                default:
+                                    System.out.println("your choice is not found, enter again");
+                                    flag = true;
+                                    break;
                             }
                         } while (flag);
                         break;
@@ -186,6 +193,7 @@ public class FuramaController {
                                     String address = scanner.nextLine();
                                     Customer newCustomer = new Customer(id, name, dateOfBirth, gender, idCard, phoneNumber, email, typeOfCustomer, address);
                                     customerService.addCustomer(newCustomer);
+                                    System.out.println("Successful!!!");
                                     break;
                                 case 3:
                                     boolean flagOneCustomer = false;
@@ -239,6 +247,10 @@ public class FuramaController {
                                     break;
                                 case 4:
                                     flag = false;
+                                    break;
+                                default:
+                                    System.out.println("your choice is not found, enter again");
+                                    flag = true;
                                     break;
                             }
                         } while (flag);
@@ -317,6 +329,7 @@ public class FuramaController {
                                                 numberOfUsesVilla = 0;
                                                 Villa newVilla = new Villa(serviceID, serviceNameVilla, usableAreaVilla, priceVilla, maximumPersonVilla, reatalTypeVilla, standardRoomVilla, poolAreaVilla, numberOfFloorVilla);
                                                 facilityService.addVilla(newVilla, numberOfUsesVilla);
+                                                System.out.println("Successful!!!");
                                                 flagOneFacility = true;
                                                 break;
                                             case 2:
@@ -359,10 +372,15 @@ public class FuramaController {
                                                 numberOfUsesRoom = 0;
                                                 Room newRoom = new Room(serviceIDRoom, serviceNameRoom, usableAreaRoom, priceRoom, maximumPersonRoom, reatalTypeRoom, freeServiceRoom);
                                                 facilityService.addRoom(newRoom, numberOfUsesRoom);
+                                                System.out.println("Successful!!!");
                                                 flagOneFacility = true;
                                                 break;
                                             case 3:
                                                 flagOneFacility = false;
+                                                break;
+                                            default:
+                                                System.out.println("your choice is not found, enter again");
+                                                flagOneFacility = true;
                                                 break;
                                         }
                                     } while (flagOneFacility);
@@ -376,6 +394,10 @@ public class FuramaController {
                                     break;
                                 case 4:
                                     flag = false;
+                                    break;
+                                default:
+                                    System.out.println("your choice is not found, enter again");
+                                    flag = true;
                                     break;
                             }
                         } while (flag);
@@ -395,14 +417,47 @@ public class FuramaController {
                                     for (Customer customer : listCustomer) {
                                         System.out.println(customer);
                                     }
-                                    System.out.println("Enter id of customer");
-                                    int id = Integer.parseInt(scanner.nextLine());
+                                    boolean flagId = false;
+                                    int id;
+                                    do {
+                                        System.out.println("Enter id of customer");
+                                        id = Integer.parseInt(scanner.nextLine());
+                                        int count = 0;
+                                        for (Customer customer : listCustomer) {
+                                            if (id == customer.getId()) {
+                                                count++;
+                                            }
+                                        }
+                                        if (count > 0) {
+                                            flagId = false;
+                                        } else {
+                                            flagId = true;
+                                            System.out.println("Id customer is not found");
+                                        }
+
+                                    } while (flagId);
                                     Map<Facility, Integer> mapListFacility = facilityService.displayFacility();
                                     for (Map.Entry<Facility, Integer> entry : mapListFacility.entrySet()) {
                                         System.out.println(entry.getKey() + "-" + entry.getValue());
                                     }
-                                    System.out.println("Select id of service that you want book");
-                                    String idService = scanner.nextLine();
+                                    boolean flagIdService = false;
+                                    String idService;
+                                    int count = 0;
+                                    do {
+                                        System.out.println("Select id of service that you want book");
+                                        idService = scanner.nextLine();
+                                        for (Map.Entry<Facility, Integer> entry : mapListFacility.entrySet()) {
+                                            if (entry.getKey().getServiceID().equals(idService)) {
+                                                count++;
+                                            }
+                                        }
+                                        if (count > 0) {
+                                            flagIdService = false;
+                                        } else {
+                                            flagIdService = true;
+                                            System.out.println("Id service is not found");
+                                        }
+                                    } while (flagIdService);
                                     int bookingReference;
                                     boolean flagBookingTwo = true;
                                     do {
@@ -441,6 +496,10 @@ public class FuramaController {
                                 case 3:
                                     flagBooking = false;
                                     break;
+                                default:
+                                    System.out.println("your choice is not found, enter again");
+                                    flagBooking = true;
+                                    break;
                             }
                         } while (flagBooking);
                         break;
@@ -473,11 +532,18 @@ public class FuramaController {
                                 case 3:
                                     flagPromotion = false;
                                     break;
+                                default:
+                                    System.out.println("your choice is not found, enter again");
+                                    flagPromotion = true;
+                                    break;
                             }
                         } while (flagPromotion);
                         break;
                     case 6:
                         System.exit(0);
+                        break;
+                    default:
+                        System.out.println("your choice is not found, enter again");
                         break;
                 }
             } while (true);
